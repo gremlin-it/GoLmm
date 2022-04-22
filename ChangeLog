@@ -1,0 +1,4 @@
+2022-04-22  gremlin  <gremlin@deunan.loc>
+
+	* ChangeLog: New file.
+	* .gitignore: adds eclipse giles and build directory 
