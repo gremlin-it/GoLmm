@@ -35,7 +35,7 @@ GolArea::GolArea(int r, int c): rows(r), cols(c)
 {
     sf.resize(std::thread::hardware_concurrency());
     width = height = 0;
-    std::cerr << "GolArea" << std::endl;
+    std::cerr << "GolArea: " << cols << " x " << rows << std::endl;
 }
 
 GolArea::~GolArea()
@@ -44,7 +44,6 @@ GolArea::~GolArea()
 
 void GolArea::set_cells(const uint8_t newcells[]) {
     this->cells = newcells;
-    std::cerr << "GolArea::set_cells" << std::endl;
 };
 
 
@@ -55,7 +54,7 @@ void udraw(const Cairo::RefPtr<Cairo::Surface> &sur, const uint8_t *cells, const
 
     cr->set_line_width(1);
 
-    cr->set_source_rgb(0.2, 0.2, 0.8);
+    cr->set_source_rgb(0.4, 0.4, 0.8);
     for (int i = start; i <= end; ++i) {
         if (cells[i] != 0) {
             int x = (i - start) % col;
