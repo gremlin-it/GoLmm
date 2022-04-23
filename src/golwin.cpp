@@ -48,7 +48,7 @@ GolWin::GolWin(int w, int h, int s, int d): width(w), height(h), cell_size(s), d
     show_all();
     init();
 
-    Glib::signal_timeout().connect( sigc::mem_fun(*this, &GolWin::advance), 30);
+    Glib::signal_timeout().connect( sigc::mem_fun(*this, &GolWin::advance), delay);
 }
 
 GolWin::~GolWin()
@@ -123,11 +123,10 @@ gboolean GolWin::advance(void)
     int cycle = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 
     if (cycle > delay) {
-        std::cerr << "delay time is too short, increase at leat to " << cycle << std::endl;
+        std::cerr << "delay time is too short, increase at least to " << cycle << std::endl;
         close();
         return false;
     }
-
     queue_draw();
 
     return true;
