@@ -18,6 +18,7 @@
  *  with Golpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <memory>
 #include <array>
 #include <memory>
 #include <gtkmm.h>
@@ -27,14 +28,14 @@
 
 class GolWin: public Gtk::ApplicationWindow {
 public:
-    GolWin(int w, int h, int r, int c);
+    GolWin(int w, int h, int s, int d);
     ~GolWin();
 protected:
     static const int Ncells = 100;
     gboolean advance(void);
     void init(void);
 private:
-    int rows, cols, width, height;
-    GolArea area;
+    int rows, cols, width, height, cell_size, delay;
+    std::unique_ptr<GolArea> area;
     uint8_t *cells;
 };

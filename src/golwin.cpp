@@ -19,18 +19,23 @@
  */
 
 #include <iostream>
-#include <memory>
 #include <math.h>
 #include <iostream>
 #include <assert.h>
 #include <cmath>
 #include <random>
 #include <complex>
+#include <chrono>
 
 #include "golwin.h"
 
-GolWin::GolWin(int w, int h, int r, int c): rows(r), cols(c), width(w), height(h), area(r, c)
+GolWin::GolWin(int w, int h, int s, int d): width(w), height(h), cell_size(s), delay(d)
 {
+    rows = height / cell_size;
+    cols = width / cell_size;
+
+    area = std::make_unique<GolArea>(rows, cols);
+
     set_show_menubar(false);
     set_default_size(width, height);
     set_title("gremlin's Life");
@@ -38,8 +43,8 @@ GolWin::GolWin(int w, int h, int r, int c): rows(r), cols(c), width(w), height(h
     set_resizable(false);
 
     cells = new uint8_t[rows * cols];
-    area.set_cells(cells);
-    add(area);
+    area->set_cells(cells);
+    add(*area);
     show_all();
     init();
 
@@ -75,6 +80,7 @@ gboolean GolWin::advance(void)
     int size =  rows * cols;
     uint8_t *next = new uint8_t[rows * cols];
 
+    auto start = std::chrono::high_resolution_clock::now();
     bzero(next, sizeof(uint8_t) * size);
     for (int i = 0; i < size; ++i) {
         int x, y;
@@ -113,6 +119,15 @@ gboolean GolWin::advance(void)
         }
     }
     memcpy(cells, next, size * sizeof(uint8_t));
+    auto end = std::chrono::high_resolution_clock::now();
+    int cycle = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
+    if (cycle > delay) {
+        std::cerr << "delay time is too short, increase at leat to " << cycle << std::endl;
+        close();
+        return false;
+    }
+
     queue_draw();
 
     return true;
