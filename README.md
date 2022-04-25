@@ -1,6 +1,8 @@
 # GoLmm
 Game of Life in Gtkmm Cairomm OpenCL
 
+![GoLmm animation](https://github.com/gremlin-it/GoLmm/blob/main/GoLmm.gif?raw=true)
+
 It's just a self trainig example about use C++, Gtkmm, Cairomm, OpenCL and CMake as build sysyem. 
 Putting all togheter to do a simple algorithm with a simple graphical animated output and, for me at least, a little psychedelic. 
 
