@@ -24,6 +24,9 @@
 #include <gtkmm.h>
 #include <random>
 
+#define CL_HPP_TARGET_OPENCL_VERSION 220
+#include "opencl.hpp"
+
 #include "golarea.h"
 
 class GolWin: public Gtk::ApplicationWindow {
@@ -32,10 +35,18 @@ public:
     ~GolWin();
 protected:
     static const int Ncells = 100;
-    gboolean advance(void);
     void init(void);
+    gboolean advance(void);
+    void createKernel(const std::vector<cl::Device> &devices);
 private:
     int rows, cols, width, height, cell_size, delay;
     std::unique_ptr<GolArea> area;
     uint8_t *cells;
+    cl::Context context;
+    cl::CommandQueue queue;
+    cl::Event event;
+    cl::Kernel kernel;
+    cl::Buffer iCells;
+    cl::Buffer oCells;
+
 };
